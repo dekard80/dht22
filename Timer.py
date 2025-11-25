@@ -9,9 +9,9 @@ class Timer:
     initial_time = 0
     cpu_save = False
 
-    def __init__(self, ti, cpus=False):
-        self.cpu_save = cpus
-        self.time_interval = ti
+    def __init__(self, time_interval, cpu_save=False):
+        self.cpu_save = cpu_save
+        self.time_interval = time_interval
 
     def start(self):
         self.initial_time = time()

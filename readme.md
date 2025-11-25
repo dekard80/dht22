@@ -1,6 +1,6 @@
 # Simple Python script to use a DHT22/11 sensor with a Raspberry Pi
 
-## library installation dht22/dht11
+## libraries installation dht22/dht11
 ```
 pip3 install adafruit-circuitpython-dht RPi.GPIO
 ```
@@ -48,3 +48,5 @@ delay - the time interval between readings in seconds
 print_on_terminal - whether readings should be printed to terminal (useless if running with systemd)
 
 save_to_file - whether to save readings to disk
+## run from cli
+python3 dht22.py

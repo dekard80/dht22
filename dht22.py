@@ -1,23 +1,11 @@
 # Cyclically reads temperature and humidity from the DHT22/11 sensor with a
 # Raspberry Pi and print the readings to the terminal and to a file
 
-from time import sleep, localtime, strftime
-from board import board_id, D4
-from adafruit_dht import DHT22
-from math import log
+from time import localtime, strftime
 from Timer import Timer
 from Config import Config
-
-
-# calculate the dew point
-def dewPoint(Tc, Rh):
-    try:
-        Es = 6.11 * pow(10, (7.5 * Tc) / (237.7 + Tc))
-        E = (Rh * Es) / 100
-        dew_point = (-430.22 + 237.7 * log(E)) / (-log(E) + 19.08)
-    except ValueError as error:
-        return 0.0
-    return dew_point
+from Dht22sensor import Dht22sensor
+from board import board_id, D4
 
 
 # returns the log file name as "year+month+.log"
@@ -54,28 +42,7 @@ def terminalMsg(temp, hum, dp):
           hum:.1f}%, Dew point: {dp:.1f}°C")
 
 
-# reads the sensor, if the reading is successful it returns True
-# otherwise False
-# it is based on examples from Adafruit's CircuitPython libraries
-# https://github.com/adafruit/Adafruit_CircuitPython_DHT
-def sensor_read():
-    global temperature
-    global humidity
-    try:
-        temperature = dhtDevice.temperature
-        humidity = dhtDevice.humidity
-    except RuntimeError as error:
-        # Errors happen fairly often, DHT's are hard to read, just keep going
-        return False
-    except Exception as error:
-        dhtDevice.exit()
-        raise error
-        return False
-    return True
-
-
 # ------ SETUP --------
-
 # default values
 temperature = 0  # °C
 humidity = 0  # %
@@ -98,8 +65,9 @@ if config.isValid():
 # use DHT11 for DHT11 sensor
 # use use_pulseio=False on Raspberry Pi board
 # change D4 based on the pin on which the sensor is connected
-dhtDevice = DHT22(D4, use_pulseio=False)
+
 timer = Timer(delay, True)
+dht22sensor = Dht22sensor(D4)
 if save_to_file:
     log_file_name = initLogFile()
 
@@ -116,10 +84,8 @@ if print_on_terminal:
 try:
     while True:
         if timer.get_state():
-            # try to read the sensor until the reading is successful
-            while not sensor_read():
-                sleep(2)
-            dew_Point = dewPoint(temperature, humidity)
+            temperature, humidity = dht22sensor.read()
+            dew_Point = dht22sensor.dewPoint(temperature, humidity)
             if print_on_terminal:
                 terminalMsg(temperature, humidity, dew_Point)
             if save_to_file:

@@ -8,13 +8,11 @@
 # conf equals None if the file does not exist or contains no valid lines
 
 class Config:
-    file_name = ""
     conf = {}
 
-    def __init__(self, fn):
-        self.file_name = fn
+    def __init__(self, file_name):
         try:
-            with open(self.file_name, "r") as f:
+            with open(file_name, "r") as f:
                 for line in f:
                     line = line.replace(" ", "")
                     line = line.replace("\n", "")
