@@ -1,81 +1,12 @@
 # Cyclically reads temperature and humidity from the DHT22/11 sensor with a
 # Raspberry Pi and print the readings to the terminal and to a file
 
-from time import time, sleep, localtime, strftime
+from time import sleep, localtime, strftime
 from board import board_id, D4
 from adafruit_dht import DHT22
 from math import log
-
-
-# create a timer
-class Timer:
-    state = False
-    time_interval = 0
-    initial_time = 0
-    cpu_save = False
-
-    def __init__(self, ti, cpus=False):
-        self.cpu_save = cpus
-        self.time_interval = ti
-
-    def start(self):
-        self.initial_time = time()
-        self.state = False
-
-    def get_state(self):
-        return self.state
-
-    def run(self):
-        if (self.initial_time + self.time_interval) < time():
-            self.state = True
-        # reduces CPU load
-        if self.cpu_save:
-            sleep(0.01)
-
-
-# read the configuration file
-# the configuration file must be written in the form: key=value
-# you can add comments:
-# # comment
-# or:
-# key=value # comment
-# the getValue() method always returns strings
-# conf equals None if the file does not exist or contains no valid lines
-class Config:
-    file_name = ""
-    conf = {}
-
-    def __init__(self, fn):
-        self.file_name = fn
-        try:
-            with open(self.file_name, "r") as f:
-                for line in f:
-                    line = line.replace(" ", "")
-                    line = line.replace("\n", "")
-                    if line == "" or line.startswith("#") or line.count("=") != 1:
-                        continue
-                    if "#" in line:
-                        line = line[:line.find("#")]
-                    line = line.split("=")
-                    if line[0] == "" or line[1] == "":
-                        continue
-                    self.conf[line[0]] = line[1]
-                if self.conf.__len__() == 0:
-                    self.conf = None
-        except FileNotFoundError:
-            self.conf = None
-
-    def isValid(self):
-        if self.conf is None:
-            return False
-        else:
-            return True
-
-    def getValue(self, key):
-        if self.conf is not None:
-            if key in self.conf:
-                return self.conf[key]
-        return None
+from Timer import Timer
+from Config import Config
 
 
 # calculate the dew point
