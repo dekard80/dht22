@@ -16,7 +16,7 @@ class Config:
                 for line in f:
                     line = line.replace(" ", "")
                     line = line.replace("\n", "")
-                    if line == "" or line.startswith("#") or line.count("=") != 1:
+                    if line == "" or line.startswith("#") or line.count("=") != 1:   # noqa: E501
                         continue
                     if "#" in line:
                         line = line[:line.find("#")]

@@ -49,4 +49,4 @@ print_on_terminal - whether readings should be printed to terminal (useless if r
 
 save_to_file - whether to save readings to disk
 ## run from cli
-python3 dht22.py
+```python3 dht22.py```

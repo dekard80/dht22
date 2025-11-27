@@ -13,7 +13,7 @@ from board import board_id, D4
 def initLogFile():
     year = str(localtime().tm_year)
     month = str(localtime().tm_mon)
-    file = year + month + ".log"
+    file = year + "-" + month + ".log"
     try:
         with open(file, "r") as f:
             contenuto = f.readline()
@@ -26,7 +26,8 @@ def initLogFile():
 # save readings to log file in csv format
 # if the file is deleted during execution it is recreated
 def logFile(temp, hum, dp):
-    now = strftime("%Y-%m-%d,%H:%M:%S")
+    # now = strftime("%Y-%m-%d,%H:%M:%S")  # complete date and time
+    now = strftime("%d,%H:%M")
     line = f"{now},{temp:.1f},{hum:.1f},{dp:.1f}\n"
     try:
         with open(log_file_name, mode="a", newline="") as file:
@@ -38,8 +39,7 @@ def logFile(temp, hum, dp):
 # print the readings to the terminal
 def terminalMsg(temp, hum, dp):
     now = strftime("%H:%M:%S")
-    print(f"{now} Temperature: {temp:.1f}°C, Humidity: {
-          hum:.1f}%, Dew point: {dp:.1f}°C")
+    print(f"{now} Temperature: {temp:.1f}°C, Humidity: {hum:.1f}%, Dew point: {dp:.1f}°C")  # noqa: E501
 
 
 # ------ SETUP --------
@@ -52,7 +52,8 @@ print_on_terminal = True
 save_to_file = True
 
 # reading configuration file
-# if the file does not exist it is not created, the default values ​​will be used
+# if the file does not exist it is not created and
+# the default values ​​will be used
 config = Config("dht.conf")
 if config.isValid():
     if config.getValue("delay").isdecimal():
