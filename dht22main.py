@@ -26,6 +26,7 @@ def initLogFile():
 # save readings to log file in csv format
 # if the file is deleted during execution it is recreated
 def logFile(temp, hum, dp):
+    log_file_name = initLogFile()
     # now = strftime("%Y-%m-%d,%H:%M:%S")  # complete date and time
     now = strftime("%d,%H:%M")
     line = f"{now},{temp:.1f},{hum:.1f},{dp:.1f}\n"
@@ -69,15 +70,13 @@ if config.isValid():
 
 timer = Timer(delay, True)
 dht22sensor = Dht22sensor(D4)
-if save_to_file:
-    log_file_name = initLogFile()
 
 if print_on_terminal:
     print("Device:", board_id)
     print("DHT22 board pin:", D4)
     print("Reading interval:", delay, "sec.")
     if save_to_file:
-        print("Log saved on file", log_file_name)
+        print("Log saved on file", initLogFile())
     print("Start reading DHT22...")
 
 
