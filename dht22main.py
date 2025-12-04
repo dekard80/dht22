@@ -10,6 +10,7 @@ from board import board_id, D4
 
 # returns the log file name as "year+month+.log"
 # and if the file does not exist it creates it
+# (one file per month)
 def initLogFile():
     year = str(localtime().tm_year)
     month = str(localtime().tm_mon)
@@ -24,7 +25,8 @@ def initLogFile():
 
 
 # save readings to log file in csv format
-# if the file is deleted during execution it is recreated
+# if the file is deleted during execution or a new file is
+# needed it is recreated
 def logFile(temp, hum, dp):
     log_file_name = initLogFile()
     # now = strftime("%Y-%m-%d,%H:%M:%S")  # complete date and time
