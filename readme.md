@@ -8,12 +8,12 @@ pip3 install adafruit-circuitpython-dht RPi.GPIO
 ## executable creation
 ```
 pip3 install pyinstaller
-pyinstaller dht22.py --onefile
+pyinstaller dht22main.py --onefile
 ```
 the executable is created in the dist folder
 ## run as systemd service
 create the file:
-```sudo nano /etc/systemd/system/dht22.service```
+```sudo nano /etc/systemd/system/dht22main.service```
 
 
 ```
@@ -36,9 +36,9 @@ WantedBy=default.target
 ```
 chmod +x /home/user/path/dht22/dht22main
 sudo systemctl daemon-reload
-sudo systemctl enable dht22.service
-sudo systemctl start dht22.service
-sudo systemctl status dht22.service
+sudo systemctl enable dht22main.service
+sudo systemctl start dht22main.service
+sudo systemctl status dht22main.service
 ```
 
 Set in the dht.conf file:
@@ -49,4 +49,4 @@ print_on_terminal - whether readings should be printed to terminal (useless if r
 
 save_to_file - whether to save readings to disk
 ## run from cli
-```python3 dht22.py```
+```python3 dht22main.py```
