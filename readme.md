@@ -26,7 +26,7 @@ Type=simple
 User=user
 Group=group
 WorkingDirectory=/home/user/path/dht22
-ExecStart=/home/user/path/dht22/dht22
+ExecStart=/home/user/path/dht22/dht22main
 Restart=always
 
 [Install]
@@ -34,7 +34,7 @@ WantedBy=default.target
 ```
 
 ```
-chmod +x /home/user/path/dht22/dht22
+chmod +x /home/user/path/dht22/dht22main
 sudo systemctl daemon-reload
 sudo systemctl enable dht22.service
 sudo systemctl start dht22.service

@@ -81,6 +81,14 @@ if print_on_terminal:
         print("Log saved on file", initLogFile())
     print("Start reading DHT22...")
 
+# first reading
+temperature, humidity = dht22sensor.read()
+dew_Point = dht22sensor.dewPoint(temperature, humidity)
+if print_on_terminal:
+    terminalMsg(temperature, humidity, dew_Point)
+if save_to_file:
+    logFile(temperature, humidity, dew_Point)
+timer.start()
 
 # ------ MAIN --------
 try:
